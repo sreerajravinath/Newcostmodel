@@ -1,0 +1,23 @@
+{
+    "excel_file": "data.xlsx",
+    "input_sheet": "Input",
+    "output_sheet": "Output",
+    "input_locations": {
+        "integer1": "B1",
+        "integer2": "B2"
+    },
+    "output_locations": {
+        "output1": "B2",
+        "output2": "B3"
+    },
+    "form_fields": {
+        "integer1": {
+            "type": "integer",
+            "label": "Enter first integer"
+        },
+        "integer2": {
+            "type": "integer",
+            "label": "Enter second integer"
+        }
+    }
+}

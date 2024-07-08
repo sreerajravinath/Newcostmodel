@@ -1,0 +1,82 @@
+{
+    "excel_file": "data.xlsx",
+    "input_sheet": "Input",
+    "output_sheet": "Output",
+    "lookup_sheet": "Lookups",
+    "input_locations": {
+        "name": "B1",
+        "age": "B2",
+        "salary_per_month": "B3",
+        "department": "B4"
+    },
+    "output_locations": {
+        "Annual Income": "B1",
+        "Pension": "B2"
+    },
+    "form_fields": {
+        "name": {
+            "type": "string",
+            "label": "Name",
+            "required": true
+        },
+        "age": {
+            "type": "integer",
+            "label": "Age",
+            "required": true
+        },
+        "salary_per_month": {
+            "type": "integer",
+            "label": "Salary per Month",
+            "required": true
+        },
+        "department": {
+            "type": "select",
+            "label": "Department",
+            "choices": [
+                {"value": "hr", "label": "Human Resources"},
+                {"value": "it", "label": "IT"},
+                {"value": "finance", "label": "Finance"},
+                {"value": "marketing", "label": "Marketing"}
+            ],
+            "required": true
+        },
+        "manufacturer": {
+            "type": "select",
+            "label": "Manufacturer",
+            "depends_on": []
+        },
+        "make": {
+            "type": "select",
+            "label": "Make",
+            "depends_on": ["manufacturer"]
+        },
+        "model": {
+            "type": "select",
+            "label": "Model",
+            "depends_on": ["manufacturer", "make"]
+        }
+    },
+    "lookup_columns": {
+        "manufacturer": {
+            "column_name": "Manufacturer",
+            "column_range": "A2:A100",
+            "remove_duplicates": true
+        },
+        "make": {
+            "column_name": "Make",
+            "column_range": "B2:B100",
+            "remove_duplicates": true,
+            "filter_by": {
+                "reference_column": "manufacturer"
+            }
+        },
+        "model": {
+            "column_name": "Model",
+            "column_range": "C2:C100",
+            "remove_duplicates": true,
+            "filter_by": {
+                "reference_columns": ["manufacturer", "make"]
+            }
+        }
+    }
+}

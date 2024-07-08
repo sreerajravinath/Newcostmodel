@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Select Model</title>
+</head>
+<body>
+    <h1>Select a Model</h1>
+    <form action="{{ url_for('specific_model_form', model_id='PLACEHOLDER') }}" method="post">
+        <select name="model_id" required onchange="this.form.action = this.form.action.replace('PLACEHOLDER', this.value);">
+            <option value="">--Please choose a model--</option>
+            {% for model in models %}
+                <option value="{{ model.id }}">{{ model.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

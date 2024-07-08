@@ -1,0 +1,46 @@
+{
+    "excel_file": "data.xlsx",
+    "input_sheet": "Input",
+    "output_sheet": "Output",
+    "input_locations": {
+        "name": "B1",
+        "age": "B2",
+        "contact_no": "B3",
+        "choice": "B4",
+        "selection_option": "B5"
+    },
+    "output_locations": {
+        "Insurance to be paid": "B1"
+    },
+    "form_fields": {
+        "name": {
+            "type": "string",
+            "label": "Name"
+        },
+        "age": {
+            "type": "integer",
+            "label": "Age"
+        },
+        "contact_no": {
+            "type": "string",
+            "label": "Contact Number"
+        },
+        "choice": {
+            "type": "radio",
+            "label": "Do you have License?",
+            "choices": [
+                {"value": "yes", "label": "Yes"},
+                {"value": "no", "label": "No"}
+            ]
+        },
+        "selection_option": {
+            "type": "select",
+            "label": "Social Media",
+            "choices": [
+                {"value": "option1", "label": "Whatsapp"},
+                {"value": "option2", "label": "Instagram"}
+            ],
+            "conditional": "choice"
+        }
+    }
+}

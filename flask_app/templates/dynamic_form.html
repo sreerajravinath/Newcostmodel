@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form for Model {{ model_id }}</title>
+    <script type="text/javascript">
+        function updateDropdown(targetId, data) {
+            var dropdown = document.getElementById(targetId);
+            dropdown.innerHTML = '<option value="">--Please select--</option>';
+            data.forEach(function(item) {
+                var option = document.createElement('option');
+                option.value = item[0];
+                option.text = item[1];
+                dropdown.add(option);
+            });
+        }
+
+        function fetchDropdownData(modelId, fieldName, dependsOnValues) {
+            fetch(`/lookup_data/${modelId}/${fieldName}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ depends_on: dependsOnValues })
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateDropdown(fieldName, data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var dependentDropdowns = document.querySelectorAll('select[data-depends-on]');
+            dependentDropdowns.forEach(function(dropdown) {
+                dropdown.addEventListener('change', function() {
+                    var dependsOn = JSON.parse(dropdown.getAttribute('data-depends-on'));
+                    var dependsOnValues = {};
+                    dependsOn.forEach(function(depField) {
+                        dependsOnValues[depField] = document.querySelector(`[name=${depField}]`).value;
+                    });
+                    fetchDropdownData('{{ model_id }}', dropdown.name, dependsOnValues);
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Form for Model {{ model_id }}</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        {% for field in form %}
+            {% if field.type != 'CSRFTokenField' and field.type != 'SubmitField' %}
+                <div id="div_{{ field.name }}">
+                    {{ field.label }}<br>
+                    {% if field.type == 'SelectField' %}
+                        <select name="{{ field.name }}" id="{{ field.name }}" {% if field.depends_on %} data-depends-on='{{ field.depends_on | tojson }}' {% endif %}>
+                            <option value="">--Please select {{ field.label|lower }}--</option>
+                            {% for choice_value, choice_label in field.choices %}
+                                <option value="{{ choice_value }}">{{ choice_label }}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {{ form.submit() }}
+    </form>
+</body>
+</html>
